@@ -1,33 +1,42 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# 빌드 결과물
+/target/
 
-### STS ###
-.apt_generated
+# Maven Wrapper
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# 프로젝트 설정 파일 (STS, IntelliJ, VSCode 등)
 .classpath
-.factorypath
 .project
-.settings
+.settings/
+.apt_generated/
+.factorypath
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+.idea/
 *.iml
 *.ipr
+*.iws
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
 .vscode/
+
+# 로그/환경파일
+*.log
+*.env
+
+# OS별 불필요 파일
+.DS_Store
+Thumbs.db
+
+# 테스트 빌드나 기타 디렉토리
+/nbbuild/
+/build/
+/dist/
+/out/
+
+# 특정 IDE 빌드 폴더
+**/build/
+**/out/

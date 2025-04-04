@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- xml -->
+
+<mapper namespace="com.yaas.recoderuserservice.repository.IUserMapper">
+
+    <!-- -->
+    <insert id="signUpUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.yaas.recoderuserservice.entity.Users">
+        insert into user_tb(user_id, name, email, encrypted_password, type, gender, reg_date) values(#{userId}, #{name}, #{email}, #{encryptedPassword}, '1', #{gender}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+    </insert>
+
+    <!-- email-->
+    <select id="findByEmail" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="string">
+        select u.user_id as userId,
+        u.name,
+        u.email,
+        u.encrypted_password as encryptedPassword,
+        u.type,
+        u.gender,
+        u.reg_date as regDate
+        from user_tb u
+        where email=#{email}
+    </select>
+
+    <!-- confirm -->
+    <select id="confirmUser" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="string">
+        select u.user_id as userId,
+        u.name,
+        u.email,
+        u.encrypted_password as encryptedPassword,
+        u.type,
+        u.gender,
+        u.reg_date as regDate
+        from user_tb u
+        where email=#{email}
+    </select>
+
+    <!-- -->
+    <select id="getUserById" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="long">
+        select user_id as userId,
+        name,
+        email,
+        encrypted_password as encryptedPassword,
+        type,
+        gender,
+        reg_date as regDate
+        from user_tb
+        where user_id=#{userId}
+    </select>
+
+    <!-- -->
+    <update id="updateUser" parameterType="com.yaas.recoderuserservice.entity.Users">
+        update user_tb set name=#{name}, gender=#{gender} where user_id=#{userId}
+    </update>
+
+    <!-- -->
+    <select id="getAllUsers" resultType="com.yaas.recoderuserservice.entity.Users">
+        select user_id as userId, name, email, encrypted_password as encryptedPassword, type, gender, reg_date as regDate from user_tb
+        order by regDate desc
+    </select>
+
+    <!-- -->
+    <delete id="deleteUser" parameterType="long">
+        delete from user_tb where user_id=#{userId}
+    </delete>
+
+    <!-- -->
+    <update id="updateUserType" parameterType="map">
+        update user_tb set type=#{type}
+        where user_id=#{userId}
+    </update>
+
+</mapper>

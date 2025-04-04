@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- xml -->
+
+<mapper namespace="com.yaas.recoderuserservice.repository.IMentorMapper">
+
+    <!-- -->
+    <select id="findByUserId" resultType="com.yaas.recoderuserservice.dto.MentorsDto" parameterType="long">
+        select mentor_id as mentorId, mentor_nickname as mentorNickname from mentor_tb where user_id=#{userId}
+    </select>
+
+    <!-- -->
+    <insert id="createMentor" useGeneratedKeys="true" keyProperty="mentorId" parameterType="com.yaas.recoderuserservice.entity.Mentors">
+        insert into mentor_tb(mentor_id, user_id, mentor_nickname, introduction, reg_date) values(#{mentorId}, #{userId}, #{mentorNickname}, #{introduction}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+    </insert>
+
+    <!--    <resultMap id="crMenteesList" type="com.yaas.recoderuserservice.dto.CrMenteesDto">-->
+    <!--        <id property="menteeId" column="mentee_id"/>-->
+    <!--        <result property="userId" column="user_id"/>-->
+    <!--        <result property="menteeNickname" column="mentee_nickname"/>-->
+    <!--        <result property="regDate" column="reg_date"/>-->
+
+    <!--        <collection property="crMentees" ofType="com.yaas.recoderuserservice.model.CrMenteesResponseModel">-->
+    <!--            <result property="roomId" column="room_id"/>-->
+    <!--            <result property="menteeId" column="mentee_id"/>-->
+    <!--            <result property="reviewRegDate" column="review_reg_date"/>-->
+    <!--        </collection>-->
+    <!--    </resultMap>-->
+
+    <!--
+    <select id="getMenteeNicknames" resultType="com.yaas.recoderuserservice.dto.CrMenteesDto" parameterType="long">
+        select distinct e.room_id as roomId,
+        mt.mentee_id as menteeId,
+        mt.mentee_nickname as menteeNickname
+        from mentee_tb mt, enroll_tb e
+        where e.room_id=#{roomId}
+        and mt.mentee_id=e.mentee_id
+        order by reg_date asc
+    </select> -->
+
+    <select id="getMenteeNicknames" resultType="map">
+        SELECT DISTINCT e.room_id AS roomId,
+        mt.mentee_id AS menteeId,
+        mt.mentee_nickname AS menteeNickname,
+        mt.reg_date AS regDate
+        FROM mentee_tb mt
+        JOIN enroll_tb e
+        ON mt.mentee_id = e.mentee_id
+        WHERE e.room_id = #{roomId}
+        ORDER BY regDate ASC
+    </select>
+
+    <!-- -->
+    <delete id="deleteMentee" parameterType="long">
+        delete from enroll_tb where mentee_id=#{menteeId} and room_id=#{roomId}
+    </delete>
+
+    <!-- -->
+    <select id="getMentorByMentorId" resultType="com.yaas.recoderuserservice.entity.Mentors" parameterType="long">
+        select mentor_id as mentorId, user_id as userId, mentor_nickname as mentorNickname, introduction, reg_date as regDate from mentor_tb where mentor_id=#{mentorId}
+    </select>
+
+    <!-- -->
+    <update id="updateMentorInfo" parameterType="com.yaas.recoderuserservice.entity.Mentors">
+        update mentor_tb set mentor_nickname=#{mentorNickname}, introduction=#{introduction}
+        where mentor_id=#{mentorId}
+    </update>
+
+    <!-- -->
+    <select id="getMentorNickname" resultType="com.yaas.recoderuserservice.dto.MentorNicknameDto" parameterType="long">
+        select mentor_nickname as mentorNickname
+        from mentor_tb
+        where mentor_id=#{mentorId}
+    </select>
+
+
+</mapper>

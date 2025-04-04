@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- xml -->
+
+<mapper namespace="com.yaas.recoderuserservice.repository.IMenteeMapper">
+
+    <!-- -->
+    <select id="findByUserIdMentee" resultType="com.yaas.recoderuserservice.dto.MenteesDto" parameterType="long">
+        select mentee_id as menteeId, mentee_nickname as menteeNickname from mentee_tb where user_id=#{userId}
+    </select>
+
+    <!-- -->
+    <insert id="createMentee" useGeneratedKeys="true" keyProperty="menteeId" parameterType="com.yaas.recoderuserservice.entity.Mentees">
+        insert into mentee_tb(mentee_id, user_id, mentee_nickname, reg_date) values(#{menteeId}, #{userId}, #{menteeNickname}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+    </insert>
+
+    <!-- -->
+    <select id="getMenteeNickname" resultType="com.yaas.recoderuserservice.dto.NicknameDto" parameterType="long">
+        select mentee_nickname as menteeNickname
+        from mentee_tb
+        where mentee_id=#{menteeId}
+    </select>
+
+    <!-- enroll_tb insert -->
+    <insert id="enrollReview" parameterType="com.yaas.recoderuserservice.entity.EnrollReview">
+        insert into enroll_tb(mentee_id, room_id) values(#{menteeId}, #{roomId})
+    </insert>
+
+</mapper>

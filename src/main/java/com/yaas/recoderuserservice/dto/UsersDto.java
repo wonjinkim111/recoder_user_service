@@ -10,6 +10,8 @@ public class UsersDto {
     private String email;
 
     private String encryptedPassword;
+    
+    private String password;
 
     private int type;
 

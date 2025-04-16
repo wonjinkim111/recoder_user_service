@@ -9,7 +9,7 @@
 
     <!-- -->
     <insert id="signUpUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.yaas.recoderuserservice.entity.Users">
-        insert into user_tb(user_id, name, email, encrypted_password, type, gender, reg_date) values(#{userId}, #{name}, #{email}, #{encryptedPassword}, '1', #{gender}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+        insert into user_tb(name, email, encrypted_password, type, gender, reg_date) values(#{name}, #{email}, #{encryptedPassword}, '1', #{gender}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
     </insert>
 
     <!-- email-->

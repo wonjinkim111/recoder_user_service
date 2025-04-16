@@ -14,10 +14,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +38,7 @@ public class UsersController {
 
     @Autowired
     Environment env;
-
+ 
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
@@ -46,6 +48,8 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity<CreateUserResponseModel> createUser(@RequestBody Users user) {
+    	System.out.println(">>> 사용자 요청: " + user.toString());
+    	System.out.println(">>> 입력 비밀번호: " + user.getEncryptedPassword());
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UsersDto usersDto = (UsersDto)this.modelMapper.map(user, UsersDto.class);
         UsersDto createDto = this.service.signUpUser(usersDto);

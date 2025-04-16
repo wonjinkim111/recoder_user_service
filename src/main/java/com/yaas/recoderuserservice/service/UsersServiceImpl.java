@@ -54,7 +54,7 @@ public class UsersServiceImpl implements IUsersService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users userEntity = this.mapper.findByEmail(email);
         if (userEntity == null)
-            throw new UsernameNotFoundException("");
+            throw new UsernameNotFoundException("정보를 찾을 수 없습니다.");
         return (UserDetails)new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, true, true, true, new ArrayList());
     }
 
@@ -72,10 +72,10 @@ public class UsersServiceImpl implements IUsersService {
         MenteesDto forMenteeId = this.iMenteeMapper.findByUserIdMentee(userEntity.getUserId());
         if (forMentorId == null) {
             userEntity.setMentorId(0L);
-            System.out.println("");
+            System.out.println("멘토 아이디 없어요!!!");
         } else {
             userEntity.setMentorId(forMentorId.getMentorId());
-            System.out.println("" + forMentorId.getMentorId());
+            System.out.println("멘토 아이디 있어요!!!" + forMentorId.getMentorId());
         }
         if (forMenteeId == null) {
             userEntity.setMenteeId(0L);

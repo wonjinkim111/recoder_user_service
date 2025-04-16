@@ -69,10 +69,10 @@ public class MentorServiceImpl implements IMentorService {
 
     public List<CrMenteesDto> getMenteeNicknames(@PathVariable long roomId) {
         List<CrMenteesDto> crMenteesDtos = this.iMentorMapper.getMenteeNicknames(roomId);
-        System.out.println("getMenteeNickname");
+        System.out.println("getMenteeNickname 서비스!");
         if (crMenteesDtos == null)
             log.info(String.format("not exists %s", new Object[] { Long.valueOf(roomId) }));
-        log.info(">>> Before calling code review microservice");
+        log.info("코드 리뷰 >>> Before calling code review microservice");
         for (int i = 0; i < crMenteesDtos.size(); i++) {
             Map<String, Long> crMenteesMap = new HashMap<>();
             crMenteesMap.put("roomId", Long.valueOf(((CrMenteesDto)crMenteesDtos.get(i)).getRoomId()));
@@ -81,7 +81,7 @@ public class MentorServiceImpl implements IMentorService {
             ((CrMenteesDto)crMenteesDtos.get(i)).setReviewCount(crMenteesList.getReviewCount());
             ((CrMenteesDto)crMenteesDtos.get(i)).setReviewLanguage(crMenteesList.getReviewLanguage());
         }
-        log.info(">>> After calling code review microservice");
+        log.info("코드 리뷰 >>> After calling code review microservice");
         return crMenteesDtos;
     }
 

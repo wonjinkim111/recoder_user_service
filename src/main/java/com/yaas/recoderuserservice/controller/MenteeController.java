@@ -51,7 +51,7 @@ public class MenteeController {
     @PostMapping({"/enroll"})
     @ResponseBody
     public int enrollReview(@RequestParam long menteeId, @RequestParam long roomId) {
-        System.out.println("insert " + menteeId);
+        System.out.println("insert 컨트롤러 왔다!!!" + menteeId);
         int result = this.iMenteeService.enrollReview(menteeId, roomId);
         return result;
     }

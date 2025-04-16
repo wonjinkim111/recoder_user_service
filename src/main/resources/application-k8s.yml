@@ -29,7 +29,7 @@ login:
     path: /recoder/login
 
 gateway:
-  ip: 192.168.0.40
+  ip: 192.168.45.47
 
 token:
   expiration_time: 86400000

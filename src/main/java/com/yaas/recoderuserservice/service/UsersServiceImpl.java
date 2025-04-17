@@ -53,6 +53,7 @@ public class UsersServiceImpl implements IUsersService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users userEntity = this.mapper.findByEmail(email);
+        System.out.println("▶▶ DB에서 찾은 사용자: " + userEntity);
         if (userEntity == null)
             throw new UsernameNotFoundException("정보를 찾을 수 없습니다.");
         return (UserDetails)new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, true, true, true, new ArrayList());

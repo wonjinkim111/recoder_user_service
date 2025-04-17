@@ -30,7 +30,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(
+	    origins = "http://192.168.1.10:30080", 
+	    allowedHeaders = "*", 
+	    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE}
+	)
 @RestController
 @RequestMapping({"/users"})
 public class UsersController {

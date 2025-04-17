@@ -50,8 +50,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String email = ((User)authResult.getPrincipal()).getUsername();
         UsersDto usersDto = this.userService.getUserDetailsByEmail(email);
-        String token = Jwts.builder().setSubject(usersDto.getUserId()).setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(this.env.getProperty("token.expiration_time")))).signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret")).compact();
+        String token = Jwts.builder()
+        	    .setSubject(String.valueOf(usersDto.getUserId())) // ✅ String으로 변환
+        	    .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
+        	    .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
+        	    .compact();
         response.addHeader("token", token);
-        response.addHeader("userId", usersDto.getUserId());
+        response.addHeader("userId", String.valueOf(usersDto.getUserId()));
     }
 }

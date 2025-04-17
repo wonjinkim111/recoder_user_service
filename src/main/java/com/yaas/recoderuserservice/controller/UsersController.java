@@ -69,7 +69,12 @@ public class UsersController {
         UsersDto userDto = this.service.confirmUser(loginRequestModel.getEmail(), loginRequestModel.getEncryptedPassword());
         if (userDto != null) {
             Map<String, Object> map = new HashMap<>();
-            String token = Jwts.builder().setSubject(loginRequestModel.getEmail()).setHeader(map).setExpiration(new Date(System.currentTimeMillis() + 3600000L)).signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret")).compact();
+            String token = Jwts.builder()
+            	    .setSubject(String.valueOf(userDto.getUserId()))  // ✅ 여기 수정!
+            	    .setHeader(map)
+            	    .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
+            	    .signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret"))
+            	    .compact();
             LinkedMultiValueMap linkedMultiValueMap = new LinkedMultiValueMap();
             linkedMultiValueMap.add("userId", userDto.getUserId());
             linkedMultiValueMap.add("token", token);

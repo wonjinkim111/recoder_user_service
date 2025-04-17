@@ -1,28 +1,39 @@
 package com.yaas.recoderuserservice.entity;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Users {
     private long userId;
 
+    @JsonProperty("name")
     private String name;
-
+    
+    @JsonProperty("email")
     private String email;
 
+    @JsonProperty("encryptedPassword")
     private String encryptedPassword;
 
+    @JsonProperty("type")
     private int type;
 
+    @JsonProperty("gender")
     private int gender;
 
+    @JsonProperty("regDate")
     private Date regDate;
 
+    @JsonProperty("mentorId")
     private long mentorId;
 
+    @JsonProperty("menteeId")
     private long menteeId;
 
+    @JsonProperty("mentorNickname")
     private String mentorNickname;
 
+    @JsonProperty("menteeNickname")
     private String menteeNickname;
 
     public void setUserId(long userId) {

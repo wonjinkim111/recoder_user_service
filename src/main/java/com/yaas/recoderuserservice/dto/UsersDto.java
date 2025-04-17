@@ -2,30 +2,42 @@ package com.yaas.recoderuserservice.dto;
 
 import java.util.Date;
 
-public class UsersDto {
-    private String userId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class UsersDto {
+    private long userId;
+
+    @JsonProperty("name")
     private String name;
 
+    @JsonProperty("email")
     private String email;
 
+    @JsonProperty("encryptedPassword")
     private String encryptedPassword;
 
+    @JsonProperty("type")
     private int type;
 
+    @JsonProperty("gender")
     private int gender;
 
+    @JsonProperty("regDate")
     private Date regDate;
 
-    private String mentorId;
+    @JsonProperty("mentorId")
+    private long mentorId;
 
-    private String menteeId;
+    @JsonProperty("menteeId")
+    private long menteeId;
 
+    @JsonProperty("mentorNickname")
     private String mentorNickname;
 
+    @JsonProperty("menteeNickname")
     private String menteeNickname;
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -53,11 +65,11 @@ public class UsersDto {
         this.regDate = regDate;
     }
 
-    public void setMentorId(String mentorId) {
+    public void setMentorId(long mentorId) {
         this.mentorId = mentorId;
     }
 
-    public void setMenteeId(String menteeId) {
+    public void setMenteeId(long menteeId) {
         this.menteeId = menteeId;
     }
 
@@ -142,7 +154,7 @@ public class UsersDto {
         return "UsersDto(userId=" + getUserId() + ", name=" + getName() + ", email=" + getEmail() + ", encryptedPassword=" + getEncryptedPassword() + ", type=" + getType() + ", gender=" + getGender() + ", regDate=" + getRegDate() + ", mentorId=" + getMentorId() + ", menteeId=" + getMenteeId() + ", mentorNickname=" + getMentorNickname() + ", menteeNickname=" + getMenteeNickname() + ")";
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
@@ -170,11 +182,11 @@ public class UsersDto {
         return this.regDate;
     }
 
-    public String getMentorId() {
+    public long getMentorId() {
         return this.mentorId;
     }
 
-    public String getMenteeId() {
+    public long getMenteeId() {
         return this.menteeId;
     }
 

@@ -40,7 +40,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .cors() // ✅ CORS 활성화
+            .cors() // CORS 활성화
             .and()
             .csrf().disable()
             .authorizeRequests()

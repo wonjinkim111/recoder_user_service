@@ -69,8 +69,15 @@ public class UsersServiceImpl implements IUsersService {
     public UsersDto confirmUser(String email, String encryptedPassword) throws UsernameNotFoundException {
         ModelMapper modelMapper = new ModelMapper();
         Users userEntity = this.mapper.findByEmail(email);
+        
+        if (userEntity == null) { 	// 250420 NullPointerException (NPE) Error로 인해 코드 보강 수정!
+            System.out.println("로그인 실패: 해당 이메일 없음 - " + email);
+            return null;
+        }
+        
         MentorsDto forMentorId = this.iMentorMapper.findByUserId(userEntity.getUserId());
         MenteesDto forMenteeId = this.iMenteeMapper.findByUserIdMentee(userEntity.getUserId());
+        
         if (forMentorId == null) {
             userEntity.setMentorId(0L);
             System.out.println("멘토 아이디 없어요!!!");
@@ -78,13 +85,16 @@ public class UsersServiceImpl implements IUsersService {
             userEntity.setMentorId(forMentorId.getMentorId());
             System.out.println("멘토 아이디 있어요!!!" + forMentorId.getMentorId());
         }
+        
         if (forMenteeId == null) {
             userEntity.setMenteeId(0L);
         } else {
             userEntity.setMenteeId(forMenteeId.getMenteeId());
         }
+        
         if (this.bCryptPasswordEncoder.matches(encryptedPassword, userEntity.getEncryptedPassword()))
-            return (UsersDto)modelMapper.map(userEntity, UsersDto.class);
+        	return modelMapper.map(userEntity, UsersDto.class);
+        System.out.println("❌ 로그인 실패: 비밀번호 불일치"); // 250420 NullPointerException (NPE) Error로 인해 코드 보강 수정!
         return null;
     }
 

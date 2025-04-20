@@ -68,19 +68,25 @@ public class UsersController {
     public ResponseEntity loginUser(@RequestBody LoginRequestModel loginRequestModel, HttpServletResponse response) {
         UsersDto userDto = this.service.confirmUser(loginRequestModel.getEmail(), loginRequestModel.getEncryptedPassword());
         if (userDto != null) {
+            if (userDto == null) {
+                System.out.println("로그인 실패: 이메일 또는 비밀번호 불일치"); // 250420 여기 수정(null 체크 없이 .getUserId() 호출한 게 문제로 인한 500 error 발생)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 또는 비밀번호가 올바르지 않습니다.");
+            }
+
             Map<String, Object> map = new HashMap<>();
             String token = Jwts.builder()
-            	    .setSubject(String.valueOf(userDto.getUserId()))  // ✅ 여기 수정!
+            	    .setSubject(String.valueOf(userDto.getUserId()))  // 여기 수정!
             	    .setHeader(map)
             	    .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
             	    .signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret"))
             	    .compact();
+            
             LinkedMultiValueMap linkedMultiValueMap = new LinkedMultiValueMap();
             linkedMultiValueMap.add("userId", userDto.getUserId());
             linkedMultiValueMap.add("token", token);
             linkedMultiValueMap.add("mentorId", userDto.getMentorId());
             linkedMultiValueMap.add("menteeId", userDto.getMenteeId());
-            return new ResponseEntity((MultiValueMap)linkedMultiValueMap, HttpStatus.OK);
+            return new ResponseEntity<>(linkedMultiValueMap, HttpStatus.OK); // 250420 여기 수정(null 체크 없이 .getUserId() 호출한 게 문제로 인한 500 error 발생)
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }

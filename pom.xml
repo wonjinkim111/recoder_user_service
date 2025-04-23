@@ -140,12 +140,11 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- eureka feign https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-ribbon -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-            <version>2.2.3.RELEASE</version>
-        </dependency>
+		<!-- 추가 -->
+		<dependency>
+    		<groupId>org.springframework.cloud</groupId>
+    		<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
 
         <!-- k8s -->
         <dependency>

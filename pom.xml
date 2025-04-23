@@ -130,6 +130,20 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <exclusions>
+        		<exclusion>
+            		<groupId>org.springframework.cloud</groupId>
+            		<artifactId>spring-cloud-netflix-ribbon</artifactId>
+        		</exclusion>
+        		<exclusion>
+            		<groupId>com.netflix.ribbon</groupId>
+            		<artifactId>ribbon</artifactId>
+        		</exclusion>
+        		<exclusion>
+            		<groupId>com.netflix.netflix-commons</groupId>
+            		<artifactId>netflix-commons-util</artifactId>
+        		</exclusion>
+    		</exclusions>
         </dependency>
 
 		<!-- 추가 -->

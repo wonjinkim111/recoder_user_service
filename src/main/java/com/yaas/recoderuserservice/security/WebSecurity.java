@@ -43,12 +43,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         .csrf().disable() // CSRF 토큰 검증 끔
         .authorizeRequests()
             .antMatchers("/users/login", "/users").permitAll() // 로그인, 회원가입은 인증 없이 허용
-            .anyRequest().authenticated(); // 나머지는 인증 필요
+            .anyRequest().authenticated() // 나머지는 인증 필요
+        .and()
+        .addFilter(getAuthenticationFilter()); // 인증 필터 추가
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(this.userService, this.env, authenticationManager());
-        authenticationFilter.setFilterProcessesUrl("//" + this.env.getProperty("login.url.path"));
+        authenticationFilter.setFilterProcessesUrl("/users/login" + this.env.getProperty("login.url.path"));
         return authenticationFilter;
     }
 

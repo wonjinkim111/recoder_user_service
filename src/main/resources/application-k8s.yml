@@ -20,6 +20,17 @@ spring:
       discovery:
         all-namespaces: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  security:
+    enabled: false
+
 mybatis:
   type-aliases-package: com.yaas.recoderuserservice.entity
   mapper-locations: mapper/**/*.xml

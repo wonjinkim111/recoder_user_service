@@ -19,6 +19,9 @@ spring:
     kubernetes:
       discovery:
         all-namespaces: true
+    loadbalancer:
+      ribbon:
+        enabled: false  # 추가!
 
 management:
   endpoints:

@@ -40,7 +40,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-        .csrf().disable() // CSRF 토큰 검증 끔
+        .cors().and()
+        .csrf(csrf -> csrf.disable())
         .authorizeRequests()
             .antMatchers("/users/login", "/users").permitAll() // 로그인, 회원가입은 인증 없이 허용
             .anyRequest().authenticated() // 나머지는 인증 필요

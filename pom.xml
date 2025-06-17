@@ -173,12 +173,22 @@
     </dependencyManagement>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+  <!-- ✅ 여기에 리소스 포함 규칙 추가 -->
+  	<resources>
+    	<resource>
+      		<directory>src/main/resources</directory>
+      		<includes>
+        		<include>**/*.yml</include>
+      </includes>
+    </resource>
+  </resources>
+
+  <plugins>
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+    </plugin>
+  </plugins>
+</build>
 
 </project>

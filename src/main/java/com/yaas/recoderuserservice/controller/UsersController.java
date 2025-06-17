@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(
-	    origins = "http://recoder.com:31413", 
+	    origins = "http://192.168.1.10:30080", 
 	    allowedHeaders = "*", 
 	    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE}
 	)

@@ -65,7 +65,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);  // 인증정보 포함 허용
-        config.setAllowedOrigins(Arrays.asList("http://recoder.com:31413"));  // React 앱 주소(http://192.168.1.10:30080)
+        config.setAllowedOrigins(Arrays.asList("http://192.168.1.10:30080"));  // React 앱 주소(http://192.168.1.10:30080)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setExposedHeaders(Arrays.asList("Authorization", "userId", "token", "mentorId", "menteeId"));

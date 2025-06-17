@@ -15,7 +15,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 모든 경로에 대해
-                        .allowedOrigins("http://recoder.com:31413") // React IP(http://192.168.45.37:30080)
+                        .allowedOrigins("http://192.168.1.10:30080") // React IP(http://192.168.45.37:30080)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

@@ -33,11 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-/*@CrossOrigin(
-	    origins = "http://192.168.1.10:30080", 
-	    allowedHeaders = "*", 
-	    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE}
-	)*/
 @RestController
 @RequestMapping({"/users"})
 public class UsersController {
@@ -55,8 +50,6 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity<CreateUserResponseModel> createUser(@RequestBody Users user) {
-    	System.out.println(">>> 사용자 요청: " + user.toString());
-    	System.out.println(">>> 입력 비밀번호: " + user.getEncryptedPassword());
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UsersDto usersDto = (UsersDto)this.modelMapper.map(user, UsersDto.class);
         UsersDto createDto = this.service.signUpUser(usersDto);
@@ -67,49 +60,36 @@ public class UsersController {
     @PostMapping({"/login"})
     public ResponseEntity loginUser(@RequestBody LoginRequestModel loginRequestModel, HttpServletResponse response) {
         UsersDto userDto = this.service.confirmUser(loginRequestModel.getEmail(), loginRequestModel.getEncryptedPassword());
-        if (userDto == null) {
-            System.out.println("로그인 실패: 이메일 또는 비밀번호 불일치");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("이메일 또는 비밀번호가 올바르지 않습니다.");
+        if (userDto != null) {
+            Map<String, Object> map = new HashMap<>();
+            String token = Jwts.builder().setSubject(loginRequestModel.getEmail()).setHeader(map).setExpiration(new Date(System.currentTimeMillis() + 3600000L)).signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret")).compact();
+            LinkedMultiValueMap linkedMultiValueMap = new LinkedMultiValueMap();
+            linkedMultiValueMap.add("userId", userDto.getUserId());
+            linkedMultiValueMap.add("token", token);
+            linkedMultiValueMap.add("mentorId", userDto.getMentorId());
+            linkedMultiValueMap.add("menteeId", userDto.getMenteeId());
+            return new ResponseEntity((MultiValueMap)linkedMultiValueMap, HttpStatus.OK);
         }
-
-        Map<String, Object> map = new HashMap<>();
-        String token = Jwts.builder()
-                .setSubject(String.valueOf(userDto.getUserId()))
-                .setHeader(map)
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000L))
-                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
-                .compact();
-            
-        LinkedMultiValueMap<String, Object> responseMap = new LinkedMultiValueMap<>();
-        responseMap.add("userId", userDto.getUserId());
-        responseMap.add("token", token);
-        responseMap.add("mentorId", userDto.getMentorId());
-        responseMap.add("menteeId", userDto.getMenteeId());
-
-        return new ResponseEntity<>(responseMap, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping({"/{userId}"})
     public ResponseEntity<CreateUserResponseModel> getUserById(@PathVariable long userId) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UsersDto usersDto = service.getUserById(userId);
-        CreateUserResponseModel returnValue = modelMapper.map(usersDto, CreateUserResponseModel.class);
-
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UsersDto usersDto = this.service.getUserById(userId);
+        CreateUserResponseModel returnValue = (CreateUserResponseModel)this.modelMapper.map(usersDto, CreateUserResponseModel.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
     }
     
-    @DeleteMapping("/{userId}")
+    @DeleteMapping({"/{userId}"})
     @ResponseBody
     public ResponseEntity<ResultResponseModel> deleteUser(@PathVariable long userId) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        long deleteResult = service.deleteUser(userId);
-
-        ResultResponseModel result = modelMapper.map(
-                deleteResult == 1L ? userId : 0,
-                ResultResponseModel.class
-        );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        long deleteResult = this.service.deleteUser(userId);
+        ResultResponseModel sReturnValue = (ResultResponseModel)this.modelMapper.map(Long.valueOf(userId), ResultResponseModel.class);
+        ResultResponseModel fReturnValue = (ResultResponseModel)this.modelMapper.map(Integer.valueOf(0), ResultResponseModel.class);
+        if (deleteResult == 1L)
+            return ResponseEntity.status(HttpStatus.CREATED).body(sReturnValue);
+        return ResponseEntity.status(HttpStatus.CREATED).body(fReturnValue);
     }
 }

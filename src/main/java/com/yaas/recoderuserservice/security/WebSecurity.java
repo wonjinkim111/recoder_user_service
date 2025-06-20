@@ -37,16 +37,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-        .cors().and()
-        .csrf(csrf -> csrf.disable())
-        .authorizeRequests()
-            .antMatchers("/users/login", "/users").permitAll() // 로그인, 회원가입은 인증 없이 허용
-            .anyRequest().authenticated() // 나머지는 인증 필요
-        .and()
-        .addFilter(getAuthenticationFilter()); // 인증 필터 추가
+        http.csrf().disable();
+        ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)http.authorizeRequests().antMatchers(new String[] { "/**" })).permitAll();
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
@@ -55,23 +48,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         return authenticationFilter;
     }
 
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService((UserDetailsService) this.userService)
             .passwordEncoder((PasswordEncoder) this.bCryptPasswordEncoder);
-    }
-    
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);  // 인증정보 포함 허용
-        config.setAllowedOrigins(Arrays.asList("http://192.168.1.10:30080"));  // React 앱 주소(http://192.168.1.10:30080)
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setExposedHeaders(Arrays.asList("Authorization", "userId", "token", "mentorId", "menteeId"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 }

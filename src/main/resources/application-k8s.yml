@@ -10,29 +10,15 @@ spring:
       enabled: true
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:mysql://mysql:31160/users?serverTimezone=UTC&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   cloud:
     kubernetes:
       discovery:
         all-namespaces: true
-    loadbalancer:
-      ribbon:
-        enabled: false  # 추가!
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-  endpoint:
-    health:
-      show-details: always
-  security:
-    enabled: false
 
 mybatis:
   type-aliases-package: com.yaas.recoderuserservice.entity
@@ -43,7 +29,7 @@ login:
     path: /recoder/login
 
 gateway:
-  ip: 192.168.45.1
+  ip: 59.29.224.144
 
 token:
   expiration_time: 86400000

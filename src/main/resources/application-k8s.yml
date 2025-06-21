@@ -12,7 +12,7 @@ spring:
   datasource:
     url: jdbc:mysql://mysql:31160/users?serverTimezone=UTC&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: mysql
+    password: test1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   cloud:
@@ -29,7 +29,7 @@ login:
     path: /recoder/login
 
 gateway:
-  ip: 59.29.224.144
+  ip: 192.168.45.1
 
 token:
   expiration_time: 86400000

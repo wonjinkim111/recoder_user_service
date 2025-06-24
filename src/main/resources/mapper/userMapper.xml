@@ -3,24 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<!-- xml -->
+        <!-- xml -->
 
 <mapper namespace="com.yaas.recoderuserservice.repository.IUserMapper">
 
     <!-- -->
     <insert id="signUpUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.yaas.recoderuserservice.entity.Users">
-        insert into user_tb(name, email, encrypted_password, type, gender, reg_date) values(#{name}, #{email}, #{encryptedPassword}, '1', #{gender}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
+        insert into user_tb(user_id, name, email, encrypted_password, type, gender, reg_date) values(#{userId}, #{name}, #{email}, #{encryptedPassword}, '1', #{gender}, DATE_FORMAT(SYSDATE(), '%Y/%m/%d %H:%i:%s'))
     </insert>
 
     <!-- email-->
     <select id="findByEmail" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="string">
         select u.user_id as userId,
-        u.name,
-        u.email,
-        u.encrypted_password as encryptedPassword,
-        u.type,
-        u.gender,
-        u.reg_date as regDate
+               u.name,
+               u.email,
+               u.encrypted_password as encryptedPassword,
+               u.type,
+               u.gender,
+               u.reg_date as regDate
         from user_tb u
         where email=#{email}
     </select>
@@ -28,12 +28,12 @@
     <!-- confirm -->
     <select id="confirmUser" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="string">
         select u.user_id as userId,
-        u.name,
-        u.email,
-        u.encrypted_password as encryptedPassword,
-        u.type,
-        u.gender,
-        u.reg_date as regDate
+               u.name,
+               u.email,
+               u.encrypted_password as encryptedPassword,
+               u.type,
+               u.gender,
+               u.reg_date as regDate
         from user_tb u
         where email=#{email}
     </select>
@@ -41,12 +41,12 @@
     <!-- -->
     <select id="getUserById" resultType="com.yaas.recoderuserservice.entity.Users" parameterType="long">
         select user_id as userId,
-        name,
-        email,
-        encrypted_password as encryptedPassword,
-        type,
-        gender,
-        reg_date as regDate
+               name,
+               email,
+               encrypted_password as encryptedPassword,
+               type,
+               gender,
+               reg_date as regDate
         from user_tb
         where user_id=#{userId}
     </select>

@@ -63,11 +63,11 @@ public class UsersController {
         if (userDto != null) {
             Map<String, Object> map = new HashMap<>();
             String token = Jwts.builder().setSubject(loginRequestModel.getEmail()).setHeader(map).setExpiration(new Date(System.currentTimeMillis() + 3600000L)).signWith(SignatureAlgorithm.HS512, this.env.getProperty("token.secret")).compact();
-            LinkedMultiValueMap linkedMultiValueMap = new LinkedMultiValueMap();
-            linkedMultiValueMap.add("userId", userDto.getUserId());
+            LinkedMultiValueMap<String, String> linkedMultiValueMap = new LinkedMultiValueMap<>();
+            linkedMultiValueMap.add("userId", String.valueOf(userDto.getUserId()));
             linkedMultiValueMap.add("token", token);
-            linkedMultiValueMap.add("mentorId", userDto.getMentorId());
-            linkedMultiValueMap.add("menteeId", userDto.getMenteeId());
+            linkedMultiValueMap.add("mentorId", String.valueOf(userDto.getMentorId()));
+            linkedMultiValueMap.add("menteeId", String.valueOf(userDto.getMenteeId()));
             return new ResponseEntity((MultiValueMap)linkedMultiValueMap, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);

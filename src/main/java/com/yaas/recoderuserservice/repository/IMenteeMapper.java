@@ -5,6 +5,7 @@ import com.yaas.recoderuserservice.dto.NicknameDto;
 import com.yaas.recoderuserservice.entity.Mentees;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 @Repository
@@ -17,5 +18,5 @@ public interface IMenteeMapper {
 
     int updateMenteeRoomId(long paramLong1, long paramLong2);
 
-    int enrollReview(long paramLong1, long paramLong2);
+    int enrollReview(@Param("menteeId") long menteeId, @Param("roomId") long roomId);
 }

@@ -79,8 +79,8 @@ public class MentorController {
 
     @GetMapping({"/{mentorId}"})
     @ResponseBody
-    public MentorsDto getMentorByMentorId(@PathVariable long MentorId) {
-        MentorsDto mentorDto = this.iMentorService.getMentorByMentorId(MentorId);
+    public MentorsDto getMentorByMentorId(@PathVariable long mentorId) {
+        MentorsDto mentorDto = this.iMentorService.getMentorByMentorId(mentorId);
         return mentorDto;
     }
 

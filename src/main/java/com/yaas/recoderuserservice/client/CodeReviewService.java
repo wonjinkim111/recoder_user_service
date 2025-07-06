@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(url = "http://localhost:30000", name = "codereview-service")
 public interface CodeReviewService {
     @GetMapping({"/codereview/mentees"})
+    // Map<String, Object> getCrMentees(@RequestParam Map<String, Long> paramMap);
     CrMenteesResponseModel getCrMentees(@RequestParam Map<String, Long> paramMap);
     //CrMenteesResponseModel getCrMentees(@RequestParam("menteeId") Long menteeId);
     

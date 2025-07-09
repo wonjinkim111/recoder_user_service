@@ -1,0 +1,40 @@
+server:
+  port: 10000
+
+spring:
+  application:
+    name: users-service
+
+  devtools:
+    restart:
+      enabled: true
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+
+mybatis:
+  type-aliases-package: com.yaas.recoderuserservice.entity
+  mapper-locations: mapper/**/*.xml
+
+login:
+  url:
+    path: /recoder/login
+
+gateway:
+  ip: 192.168.45.1
+
+token:
+  expiration_time: 86400000
+  secret: recoder_secret
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

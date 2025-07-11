@@ -10,9 +10,9 @@ spring:
       enabled: true
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:mysql://mysql:3306/users?serverTimezone=UTC&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: mysql
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   cloud:

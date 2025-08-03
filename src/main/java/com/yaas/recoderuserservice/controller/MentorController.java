@@ -54,7 +54,7 @@ public class MentorController {
 
     @GetMapping({"/mentees/{roomId}"})
     @ResponseBody
-    public List<CrMenteesDto> getMenteeNickname(@RequestParam long roomId) {
+    public List<CrMenteesDto> getMenteeNickname(@PathVariable long roomId) {
         List<CrMenteesDto> returnValue = new ArrayList<>();
         List<CrMenteesDto> mentorRoom = this.iMentorService.getMenteeNicknames(roomId);
         if (mentorRoom == null || mentorRoom.isEmpty())
@@ -79,14 +79,14 @@ public class MentorController {
 
     @GetMapping({"/{mentorId}"})
     @ResponseBody
-    public MentorsDto getMentorByMentorId(@RequestParam long mentorId) {
+    public MentorsDto getMentorByMentorId(@PathVariable long mentorId) {
         MentorsDto mentorDto = this.iMentorService.getMentorByMentorId(mentorId);
         return mentorDto;
     }
 
     @GetMapping({"/nickname"})
     @ResponseBody
-    public MentorNicknameDto getMentorNickname(@RequestParam long mentorId) {
+    public MentorNicknameDto getMentorNickname(@PathVariable long mentorId) {
         MentorNicknameDto nickname = this.iMentorService.getMentorNickname(mentorId);
         return nickname;
     }

@@ -75,7 +75,7 @@ public class UsersController {
     }
 
     @GetMapping({"/{userId}"})
-    public ResponseEntity<CreateUserResponseModel> getUserById(@RequestParam long userId) {
+    public ResponseEntity<CreateUserResponseModel> getUserById(@PathVariable long userId) {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UsersDto usersDto = this.service.getUserById(userId);
         CreateUserResponseModel returnValue = (CreateUserResponseModel)this.modelMapper.map(usersDto, CreateUserResponseModel.class);
@@ -84,7 +84,7 @@ public class UsersController {
     
     @DeleteMapping({"/{userId}"})
     @ResponseBody
-    public ResponseEntity<ResultResponseModel> deleteUser(@RequestParam long userId) {
+    public ResponseEntity<ResultResponseModel> deleteUser(@PathVariable long userId) {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         long deleteResult = this.service.deleteUser(userId);
         ResultResponseModel sReturnValue = (ResultResponseModel)this.modelMapper.map(Long.valueOf(userId), ResultResponseModel.class);

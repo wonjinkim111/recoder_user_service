@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping({"/users"})
@@ -74,7 +75,7 @@ public class UsersController {
     }
 
     @GetMapping({"/{userId}"})
-    public ResponseEntity<CreateUserResponseModel> getUserById(@PathVariable long userId) {
+    public ResponseEntity<CreateUserResponseModel> getUserById(@RequestParam long userId) {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UsersDto usersDto = this.service.getUserById(userId);
         CreateUserResponseModel returnValue = (CreateUserResponseModel)this.modelMapper.map(usersDto, CreateUserResponseModel.class);
@@ -83,7 +84,7 @@ public class UsersController {
     
     @DeleteMapping({"/{userId}"})
     @ResponseBody
-    public ResponseEntity<ResultResponseModel> deleteUser(@PathVariable long userId) {
+    public ResponseEntity<ResultResponseModel> deleteUser(@RequestParam long userId) {
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         long deleteResult = this.service.deleteUser(userId);
         ResultResponseModel sReturnValue = (ResultResponseModel)this.modelMapper.map(Long.valueOf(userId), ResultResponseModel.class);

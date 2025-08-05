@@ -86,7 +86,7 @@ public class MentorController {
 
     @GetMapping({"/nickname"})
     @ResponseBody
-    public MentorNicknameDto getMentorNickname(@PathVariable long mentorId) {
+    public MentorNicknameDto getMentorNickname(@RequestParam long mentorId) {
         MentorNicknameDto nickname = this.iMentorService.getMentorNickname(mentorId);
         return nickname;
     }

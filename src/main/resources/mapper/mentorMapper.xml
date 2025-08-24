@@ -41,9 +41,7 @@
         order by reg_date asc
     </select> -->
 
-	<select id="getMenteeNicknames"
-        parameterType="long"
-        resultType="com.yaas.recoderuserservice.dto.CrMenteesDto">
+    <select id="getMenteeNicknames" resultType="map">
         SELECT DISTINCT e.room_id AS roomId,
         mt.mentee_id AS menteeId,
         mt.mentee_nickname AS menteeNickname,
@@ -56,7 +54,7 @@
     </select>
 
     <!-- -->
-    <delete id="deleteMentee" parameterType="map">
+    <delete id="deleteMentee" parameterType="long">
         delete from enroll_tb where mentee_id=#{menteeId} and room_id=#{roomId}
     </delete>
 

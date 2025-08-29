@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Service
 public class MentorServiceImpl implements IMentorService {
@@ -68,21 +70,28 @@ public class MentorServiceImpl implements IMentorService {
 	  }
 	  
 	  public List<CrMenteesDto> getMenteeNicknames(@PathVariable long roomId) {
-	    List<CrMenteesDto> crMenteesDtos = this.iMentorMapper.getMenteeNicknames(roomId);
-	    System.out.println("getMenteeNickname");
-	    if (crMenteesDtos == null)
-	      log.info(String.format("not exists %s", new Object[] { Long.valueOf(roomId) })); 
-	    log.info("코드리뷰>>> Before calling code review microservice");
-	    for (int i = 0; i < crMenteesDtos.size(); i++) {
-	      Map<String, Long> crMenteesMap = new HashMap<>();
-	      crMenteesMap.put("roomId", Long.valueOf(((CrMenteesDto)crMenteesDtos.get(i)).getRoomId()));
-	      crMenteesMap.put("menteeId", Long.valueOf(((CrMenteesDto)crMenteesDtos.get(i)).getMenteeId()));
-	      CrMenteesResponseModel crMenteesList = this.codeReviewService.getCrMentees(crMenteesMap);
-	      ((CrMenteesDto)crMenteesDtos.get(i)).setReviewCount(crMenteesList.getReviewCount());
-	      ((CrMenteesDto)crMenteesDtos.get(i)).setReviewLanguage(crMenteesList.getReviewLanguage());
-	    } 
-	    log.info("코드리뷰>>> After calling code review microservice");
-	    return crMenteesDtos;
+		    List<CrMenteesDto> crMenteesDtos = this.iMentorMapper.getMenteeNicknames(roomId);
+		    if (crMenteesDtos == null)
+		        log.info(String.format("not exists %s", roomId));
+
+		    ObjectMapper objectMapper = new ObjectMapper(); // 또는 @Autowired로 DI
+
+		    log.info("코드리뷰>>> Before calling code review microservice");
+
+		    for (int i = 0; i < crMenteesDtos.size(); i++) {
+		        Map<String, Long> crMenteesMap = new HashMap<>();
+		        crMenteesMap.put("roomId", crMenteesDtos.get(i).getRoomId());
+		        crMenteesMap.put("menteeId", crMenteesDtos.get(i).getMenteeId());
+
+		        Object response = codeReviewService.getCrMentees(crMenteesMap);
+		        CrMenteesResponseModel crMenteesList = objectMapper.convertValue(response, CrMenteesResponseModel.class);
+
+		        crMenteesDtos.get(i).setReviewCount(crMenteesList.getReviewCount());
+		        crMenteesDtos.get(i).setReviewLanguage(crMenteesList.getReviewLanguage());
+		    }
+
+		    log.info("코드리뷰>>> After calling code review microservice");
+		    return crMenteesDtos;
 	  }
 	  
 	  public int deleteMentee(@PathVariable long menteeId, @PathVariable long roomId) {
